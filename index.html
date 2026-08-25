@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>المسبحة الإلكترونية المتطورة</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: rgba(22, 27, 34, 0.75);
+            --accent-color: #00ffcc;
+            --accent-glow: rgba(0, 255, 204, 0.4);
+            --text-color: #ffffff;
+            --text-secondary: #8b949e;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            box-sizing: border-box;
+            outline: none !important;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at center, #1a2332 0%, #0d1117 100%);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 15px;
+            overflow: hidden;
+        }
+
+        .counter-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2.5rem 1.5rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+                        0 0 30px rgba(0, 255, 204, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 360px;
+            position: relative;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .header-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            font-size: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        select option {
+            background-color: #161b22;
+            color: #fff;
+        }
+
+        .display-container {
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .display {
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 0 20px var(--accent-color), 0 0 40px var(--accent-glow);
+            transition: transform 0.1s ease, color 0.3s ease;
+        }
+
+        .btn-count {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-color);
+            background: radial-gradient(circle, rgba(0,255,204,0.2) 0%, rgba(0,0,0,0.4) 100%);
+            color: var(--accent-color);
+            font-size: 1.6rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--accent-glow),
+                        inset 0 0 15px var(--accent-glow);
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-count:active {
+            transform: scale(0.92);
+            box-shadow: 0 0 35px var(--accent-color),
+                        inset 0 0 25px var(--accent-color);
+            background: var(--accent-color);
+            color: #000;
+        }
+
+        .controls {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-action {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:active {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .stats {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 15px;
+        }
+
+        .stats span {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse-animation {
+            animation: pulse 0.15s ease-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.12); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="counter-card">
+    <div class="header-title">المسبحة الرقمية</div>
+    
+    <select id="dhikrSelect" onchange="changeDhikr(); playSound('click');">
+        <option value="سبحان الله">سبحان الله</option>
+        <option value="الحمد لله">الحمد لله</option>
+        <option value="الله أكبر">الله أكبر</option>
+        <option value="لا إله إلا الله">لا إله إلا الله</option>
+        <option value="أستغفر الله">أستغفر الله</option>
+        <option value="custom">ذكر مخصص...</option>
+    </select>
+
+    <input type="text" id="customInput" placeholder="اكتب الذكر هنا" style="display:none;" oninput="updateCustomDhikr()">
+
+    <div class="display-container">
+        <div class="display" id="counter">0</div>
+    </div>
+    
+    <button class="btn-count" id="countBtn" onclick="increment()">سبّح</button>
+
+    <div class="controls">
+        <button class="btn-action" onclick="toggleSound()">الصوت: <span id="soundStatus">مفعل</span> 🔊</button>
+        <button class="btn-action" onclick="reset(); playSound('reset');">إعادة ضبط</button>
+    </div>
+
+    <div class="stats">
+        المجموع الكلي للتسبيحات: <span id="totalCount">0</span>
+    </div>
+</div>
+
+<script>
+    let count = 0;
+    let total = parseInt(localStorage.getItem('totalDhikrSound')) || 0;
+    let soundEnabled = true;
+
+    const counterEl = document.getElementById('counter');
+    const totalCountEl = document.getElementById('totalCount');
+    const soundStatusEl = document.getElementById('soundStatus');
+
+    totalCountEl.innerText = total;
+
+    // تهيئة مأخذ الصوت الموحد لتفادي استهلاك الذاكرة وتوقف الصوت
+    let audioCtx = null;
+
+    function initAudio() {
+        if (!audioCtx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function increment() {
+        initAudio(); // تفعيل استئناف الصوت فور الضغط
+        count++;
+        total++;
+        
+        counterEl.innerText = count;
+        totalCountEl.innerText = total;
+        
+        localStorage.setItem('totalDhikrSound', total);
+
+        counterEl.classList.remove('pulse-animation');
+        void counterEl.offsetWidth; 
+        counterEl.classList.add('pulse-animation');
+
+        if (count % 33 === 0) {
+            playSound('target');
+            if (navigator.vibrate) navigator.vibrate([120, 60, 120]);
+        } else {
+            playSound('tap');
+            if (navigator.vibrate) navigator.vibrate(20);
+        }
+    }
+
+    function reset() {
+        count = 0;
+        counterEl.innerText = count;
+    }
+
+    function changeDhikr() {
+        const select = document.getElementById('dhikrSelect');
+        const customInput = document.getElementById('customInput');
+        
+        if (select.value === 'custom') {
+            customInput.style.display = 'block';
+            customInput.focus();
+        } else {
+            customInput.style.display = 'none';
+        }
+        reset();
+    }
+
+    function updateCustomDhikr() {
+        reset();
+    }
+
+    function toggleSound() {
+        soundEnabled = !soundEnabled;
+        soundStatusEl.innerText = soundEnabled ? "مفعل" : "معطل";
+        if (soundEnabled) {
+            initAudio();
+            playSound('click');
+        }
+    }
+
+    // توليد أصوات نقرات نظيفة ومصممة هندسياً بدون طنين أو رداءة
+    function playSound(type) {
+        if (!soundEnabled) return;
+        initAudio();
+        
+        try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            let now = audioCtx.currentTime;
+
+            if (type === 'tap') {
+                // صوت نقرة الخشب/المسبحة الحقيقية بدون تشويش
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(120, now + 0.03);
+                
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+                
+                osc.start(now);
+                osc.stop(now + 0.03);
+            } 
+            else if (type === 'target') {
+                // نغمة مريحة جداً ونقية عند الوصول لـ 33
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now); 
+                osc.frequency.setValueAtTime(659.25, now + 0.07); 
+                
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                
+                osc.start(now);
+                osc.stop(now + 0.2);
+            }
+            else if (type === 'click' || type === 'reset') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(350, now);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+                
+                osc.start(now);
+                osc.stop(now + 0.03);
+            }
+        } catch (e) {
+            console.log("Audio Error:", e);
+        }
+    }
+</script>
+
+</body>
+</html>
